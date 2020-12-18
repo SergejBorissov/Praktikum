@@ -1,0 +1,116 @@
+package TikTak;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+
+
+public class Main  extends Application {
+
+    final int W = 700, H = 500;
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage)  {
+
+        primaryStage.setTitle("Ein Versuch im TikTakTokismus");
+        var canvas = new Canvas(W,H);
+        var gc = canvas.getGraphicsContext2D();
+
+        Button buttonTopLeft = new Button();
+        buttonTopLeft.setOnAction(e -> buttonTopLeft.setText("X"));
+        buttonTopLeft.setPrefSize(120,120);
+        buttonTopLeft.setLayoutX(10);
+        buttonTopLeft.setLayoutY(10);
+
+        Button buttonCentreLeft = new Button();
+        buttonCentreLeft.setOnAction(e -> buttonCentreLeft.setText("X"));
+        buttonCentreLeft.setPrefSize(120,120);
+        buttonCentreLeft.setLayoutX(10);
+        buttonCentreLeft.setLayoutY(150);
+
+        Button buttonBottomLeft = new Button();
+        buttonBottomLeft.setOnAction(e -> buttonBottomLeft.setText("X"));
+        buttonBottomLeft.setPrefSize(120,120);
+        buttonBottomLeft.setLayoutX(10);
+        buttonBottomLeft.setLayoutY(300);
+
+        Button buttonTopCentre = new Button();
+        buttonTopCentre.setOnAction(e -> buttonTopCentre.setText("X"));
+        buttonTopCentre.setPrefSize(120,120);
+        buttonTopCentre.setLayoutX(140);
+        buttonTopCentre.setLayoutY(10);
+
+        Button buttonCentreMiddle = new Button();
+        buttonCentreMiddle.setOnAction(e -> buttonCentreMiddle.setText("X"));
+        buttonCentreMiddle.setPrefSize(120,120);
+        buttonCentreMiddle.setLayoutX(140);
+        buttonCentreMiddle.setLayoutY(150);
+
+        Button buttonBottomCentre = new Button();
+        buttonBottomCentre.setOnAction(e -> buttonBottomCentre.setText("X"));
+        buttonBottomCentre.setPrefSize(120,120);
+        buttonBottomCentre.setLayoutX(140);
+        buttonBottomCentre.setLayoutY(300);
+
+        Button buttonTopRight = new Button();
+        buttonTopRight.setOnAction(e -> buttonTopRight.setText("X"));
+        buttonTopRight.setPrefSize(120,120);
+        buttonTopRight.setLayoutX(270);
+        buttonTopRight.setLayoutY(10);
+
+        Button buttonCentreRight = new Button();
+        buttonCentreRight.setOnAction(e -> buttonCentreRight.setText("X"));
+        buttonCentreRight.setPrefSize(120,120);
+        buttonCentreRight.setLayoutX(270);
+        buttonCentreRight.setLayoutY(150);
+
+        Button buttonBottomRight = new Button();
+        buttonBottomRight.setOnAction(e -> buttonBottomRight.setText("X"));
+        buttonBottomRight.setPrefSize(120,120);
+        buttonBottomRight.setLayoutX(270);
+        buttonBottomRight.setLayoutY(300);
+
+        drawShapes(gc);
+
+        var root = new Group();
+        root.getChildren().add(canvas);
+        root.getChildren().add(buttonTopLeft);
+        root.getChildren().add(buttonCentreLeft);
+        root.getChildren().add(buttonBottomLeft);
+        root.getChildren().add(buttonTopCentre);
+        root.getChildren().add(buttonCentreMiddle);
+        root.getChildren().add(buttonBottomCentre);
+        root.getChildren().add(buttonTopRight);
+        root.getChildren().add(buttonCentreRight);
+        root.getChildren().add(buttonBottomRight);
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+
+    }
+
+
+    private void drawShapes(GraphicsContext gc) {
+
+        gc.strokeLine(135,440,135,0);
+        gc.strokeLine(265,440,265,0);
+        gc.strokeLine(0,285,420,285);
+        gc.strokeLine(0,140,420,140);
+
+    }
+
+}
+

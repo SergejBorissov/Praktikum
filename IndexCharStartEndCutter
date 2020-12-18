@@ -1,0 +1,22 @@
+package data;
+
+public class IndexCharStartEndCutter {
+
+    public static void main(String[] args) {
+
+        String name = "<Name>Peter</Name>";
+        int indexStart = name.indexOf('>');
+        int indexEnd = name.indexOf('/'); // char < berücksichtigen
+
+
+            for (int i = indexStart + 1; i < name.length() - indexStart - 2; i++) {
+                char c = name.charAt(i);
+                System.out.print(c);
+            }
+
+        }
+    }
+
+
+
+

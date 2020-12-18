@@ -1,0 +1,118 @@
+package JustDoIt;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+
+
+public class Main extends Application {
+
+
+    private static final String STYLECLASS_BUTTON = "button2";
+
+
+    ToggleButton button1 = new ToggleButton();
+    ToggleButton button2 = new ToggleButton();
+    ToggleButton button3 = new ToggleButton();
+    ToggleButton button4 = new ToggleButton();
+    ToggleButton button5 = new ToggleButton();
+    ToggleButton button6 = new ToggleButton();
+    ToggleButton button7 = new ToggleButton();
+    ToggleButton button8 = new ToggleButton();
+    ToggleButton button9 = new ToggleButton();
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("TikTakToe mit GridPane");
+
+
+        button2.getStyleClass().add(STYLECLASS_BUTTON);
+        button4.getStyleClass().add(STYLECLASS_BUTTON);
+        button6.getStyleClass().add(STYLECLASS_BUTTON);
+        button8.getStyleClass().add(STYLECLASS_BUTTON);
+
+
+
+        ToggleButton[] buttons = {button1, button2, button3,
+                                  button4, button5, button6,
+                                  button7, button8, button9};
+
+         for(ToggleButton btn : buttons) {
+             btn.setPrefSize(120, 120);
+             btn.setOnAction(e -> {
+                 // btn.setText("X");
+                 btn.setPrefSize(80, 80); // ins CSS rein
+                 if ((button1.isSelected() && button2.isSelected() && button3.isSelected())) {
+                     button5.setText("WIN");
+                 }
+                 if((button4.isSelected() && button5.isSelected() && button6.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button7.isSelected() && button8.isSelected() && button9.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button1.isSelected() && button4.isSelected() && button7.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button2.isSelected() && button5.isSelected() && button8.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button3.isSelected() && button6.isSelected() && button9.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button1.isSelected() && button5.isSelected() && button9.isSelected())){
+                     button5.setText("WIN");
+                 }
+                 if((button3.isSelected() && button5.isSelected() && button7.isSelected())){
+                     button5.setText("WIN");
+                 }
+             });
+         }
+
+
+        /*if(button2.isPressed() && button1.isPressed()==false){
+            button2.setOnAction(e ->{
+                button2.setText("W");
+            });
+        }
+*/
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setGridLinesVisible(true);
+        gridPane.setVgap(30);
+        gridPane.setHgap(30);
+
+        gridPane.add(button1, 0, 0, 1, 1);
+        gridPane.add(button2, 1, 0, 1, 1);
+        gridPane.add(button3, 2, 0, 1, 1);
+        gridPane.add(button4, 0, 1, 1, 1);
+        gridPane.add(button5, 1, 1, 1, 1);
+        gridPane.add(button6, 2, 1, 1, 1);
+        gridPane.add(button7, 0, 2, 1, 1);
+        gridPane.add(button8,1,2,1,1);
+        gridPane.add(button9,2,2,1,1);
+
+
+        Scene scene = new Scene(gridPane, 600, 600);
+        scene.getStylesheets().add(getClass().getResource("design.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    public static void main(String[] args) {
+        Application.launch(args);
+
+    }
+
+}
+
+
+

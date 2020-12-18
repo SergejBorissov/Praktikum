@@ -1,0 +1,122 @@
+package info.borissov;
+
+
+
+
+
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import javax.swing.text.Position;
+import java.util.Stack;
+
+
+public class MainApp extends Application implements EventHandler  {
+
+
+      Button button;
+      int i = 0;
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+
+
+            Label label1 = new Label("Name: ");
+            TextField textField = new TextField();
+            HBox hb = new HBox(10);
+            hb.getChildren().addAll(label1, textField);
+            Scene scene2 = new Scene(hb, 300,100);
+            primaryStage.setScene(scene2);
+            primaryStage.show();
+
+
+            GridPane grid = new GridPane();
+            grid.setPadding(new Insets(10,10,10,10));
+            grid.setVgap(10);
+            grid.setHgap(10);
+
+            Label namenLabel = new Label("Name: ");
+            TextField namenFeld = new TextField();
+            namenFeld.setPromptText("Trage deinen Namen ein: ");
+            Label alterLabel = new Label("Alter:  ");
+            TextField alterFeld = new TextField();
+            alterFeld.setPromptText("Trage dein Alter ein:  ");
+
+            GridPane.setConstraints(namenLabel, 0, 0);
+            GridPane.setConstraints(namenLabel, 1,0);
+            GridPane.setConstraints(alterLabel, 0,1);
+            GridPane.setConstraints(alterFeld, 1, 1);
+
+            grid.getChildren().add(namenLabel);
+            grid.getChildren().add(namenFeld);
+            grid.getChildren().add(alterLabel);
+            grid.getChildren().add(alterFeld);
+
+            Scene scene = new Scene(grid,500,300);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+
+            button = new Button();
+            button.setOnAction(e -> {
+                if(namenFeld.getText() != null && !namenFeld.getText().isEmpty()
+                && alterFeld.getText() != null && !alterFeld.getText().isEmpty()
+                ){
+                    System.out.println("Namen ist:  " + namenFeld.getText().toString());
+                    System.out.println("Alter ist:  " + alterFeld.getText().toString());
+                }
+
+            });
+
+            button.setText("Absenden");
+            button.setOnAction(this);
+            GridPane.setConstraints(button, 0, 2);
+            grid.getChildren().add(button);
+
+
+
+
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void handle(Event event) {
+
+
+        if(event.getSource() == button){
+            i++;
+            System.out.println(i + " mal geklickt");
+        }
+
+
+    }
+}
+

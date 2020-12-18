@@ -1,0 +1,39 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Book {
+
+
+    public String title = "";
+    public int published = 0;
+
+
+    public Book(String title, int published){
+        this.title = title;
+        this.published = published;
+    }
+
+    public static void main(String[] args) {
+
+
+        Map<String, Book> books = new HashMap<>();
+        books.put("345-3-2343-5654-5",
+                new Book("CodeArts -- Handbuch", 2017));
+        books.put("123-7-3432-2983-3",
+                new Book("Meditation and Isolation--Handbuch", 1988));
+        books.put("324-3-4323-4324-3",
+                new Book("Codieren -- Lexikon",2020));
+
+        /*for(String isbn : books.keySet()){
+            Book b = books.get(isbn);
+            System.out.format("ISBN: %s\n", isbn);
+            System.out.format(" %s (%d)\n" , b.title, b.published);
+        }*/
+        for(Book b: books.values()){
+            System.out.format("%s (%d)\n", b.title, b.published);
+        }
+    }
+}

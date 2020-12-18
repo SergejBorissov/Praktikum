@@ -1,0 +1,88 @@
+package JustDoIt;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+
+
+public class Main extends Application {
+
+
+    private static final String STYLECLASS_BUTTON = "button2";
+
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("TikTakToe mit GridPane");
+
+        ToggleButton[][] toggleButtons = new ToggleButton[2][2];
+
+
+
+        toggleButtons[0][1].getStyleClass().add(STYLECLASS_BUTTON);
+        toggleButtons[1][0].getStyleClass().add(STYLECLASS_BUTTON);
+        toggleButtons[1][2].getStyleClass().add(STYLECLASS_BUTTON);
+        toggleButtons[2][1].getStyleClass().add(STYLECLASS_BUTTON);
+
+
+        ToggleButton[] buttons = {toggleButtons[0][0], toggleButtons[0][1], toggleButtons[0][2],
+                toggleButtons[1][0], toggleButtons[1][1], toggleButtons[1][2],
+                toggleButtons[2][0], toggleButtons[2][1], toggleButtons[2][2]};
+
+
+         for(ToggleButton btn : buttons) {
+             btn.setOnAction(e -> {
+                 btn.setText("X");
+                 btn.setPrefSize(80, 80); //
+                 if ((toggleButtons[0][0].isSelected() && toggleButtons[0][1].isSelected() && toggleButtons[0][2].isSelected())) {
+                     toggleButtons[1][1].setText("WIN");
+                 }
+
+             });
+         }
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setGridLinesVisible(true);
+        gridPane.setVgap(30);
+        gridPane.setHgap(30);
+
+        gridPane.add(toggleButtons[0][0], 0, 0, 1, 1);
+        gridPane.add(toggleButtons[0][1], 1, 0, 1, 1);
+        gridPane.add(toggleButtons[0][2], 2, 0, 1, 1);
+        gridPane.add(toggleButtons[1][0], 0, 1, 1, 1);
+        gridPane.add(toggleButtons[1][1], 1, 1, 1, 1);
+        gridPane.add(toggleButtons[1][2], 2, 1, 1, 1);
+        gridPane.add(toggleButtons[2][0], 0, 2, 1, 1);
+        gridPane.add(toggleButtons[2][1],1,2,1,1);
+        gridPane.add(toggleButtons[2][2],2,2,1,1);
+
+
+
+
+        Scene scene = new Scene(gridPane, 600, 600);
+        scene.getStylesheets().add(getClass().getResource("design.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    public static void main(String[] args) {
+        Application.launch(args);
+
+    }
+
+
+}
+
+
+

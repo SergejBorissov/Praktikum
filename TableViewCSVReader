@@ -1,0 +1,182 @@
+package info.borissov;
+
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.json.JSONObject;
+import org.w3c.dom.ls.LSOutput;
+
+
+public class Table extends Application {
+
+
+  /* JSONObject jsonObject = new JSONObject("");
+   String jsonFile = "/home/sborissov/Schreibtisch/person.csv";
+   int i = jsonObject.getInt(jsonFile);
+*/
+
+
+    public class Person {
+
+        private SimpleStringProperty nummer, name, nachname, funktion, anfang, ende;
+
+        public String getNummer() {
+            return nummer.get();
+        }
+
+        public String getName() {
+            return name.get();
+        }
+
+        public String getNachname() {
+            return nachname.get();
+        }
+
+        public String getFunktion() {
+            return funktion.get();
+        }
+
+        public String getAnfang() {
+            return anfang.get();
+        }
+
+        public String getEnde() {
+            return ende.get();
+        }
+
+        Person(String nummer, String name, String nachname, String funktion,
+               String anfang, String ende) {
+            this.nummer = new SimpleStringProperty(nummer);
+            this.name = new SimpleStringProperty(name);
+            this.nachname = new SimpleStringProperty(nachname);
+            this.funktion = new SimpleStringProperty(funktion);
+            this.anfang = new SimpleStringProperty(anfang);
+            this.ende = new SimpleStringProperty(ende);
+        }
+
+    }
+
+    private final TableView<Person> tableView = new TableView<>();
+
+    private final ObservableList<Person> dataList
+            = FXCollections.observableArrayList();
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Tabelle CSV ");
+
+        Group root = new Group();
+
+        TableColumn columnNummer = new TableColumn("Nummer");
+        columnNummer.setCellValueFactory(
+                new PropertyValueFactory<>("Nummer"));
+
+        TableColumn columnName = new TableColumn("Name");
+        columnName.setCellValueFactory(
+                new PropertyValueFactory<>("Name"));
+
+        TableColumn columnNachname = new TableColumn("Nachname");
+        columnNachname.setCellValueFactory(
+                new PropertyValueFactory<>("Nachname"));
+
+        TableColumn columFunktion = new TableColumn("Funktion");
+        columFunktion.setCellValueFactory(
+                new PropertyValueFactory<>("Funktion"));
+
+        TableColumn columnAnfang = new TableColumn("Anfang");
+        columnAnfang.setCellValueFactory(
+                new PropertyValueFactory<>("Anfang"));
+
+        TableColumn columnEnde = new TableColumn("Ende");
+        columnEnde.setCellValueFactory(
+                new PropertyValueFactory<>("Ende"));
+
+
+        tableView.setItems(dataList);
+        tableView.getColumns().addAll(
+                columnNummer, columnName, columnNachname, columFunktion, columnAnfang, columnEnde);
+
+        tableView.setPlaceholder(new Label("Daten können nicht geladen werden!!!"));
+        VBox vBox = new VBox();
+        vBox.setSpacing(20);
+        vBox.getChildren().add(tableView);
+
+        root.getChildren().add(vBox);
+
+        primaryStage.setScene(new Scene(root, 900, 700));
+        primaryStage.show();
+
+
+        new Thread() {
+
+            @Override
+            public void run() {
+                readCSV();
+            };
+
+        }.start();
+
+    }
+
+    private void readCSV() {
+
+        System.out.println("Thread: "
+                + Platform.isFxApplicationThread());
+
+        String CsvFile = "/home/sborissov/Schreibtisch/person.csv";
+        String FieldDelimiter = ",";
+
+        BufferedReader br;
+
+        try {
+            br = new BufferedReader(new FileReader(CsvFile));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(FieldDelimiter, -1);
+
+                Person record = new Person(fields[0], fields[1], fields[2],
+                        fields[3], fields[4], fields[5]);
+                dataList.add(record);
+
+                //Add delay to simulate long time operation
+                try {
+                    Thread.sleep(1200);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Table.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Table.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Table.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+}
+

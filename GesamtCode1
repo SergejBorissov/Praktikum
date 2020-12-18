@@ -1,0 +1,373 @@
+package tikTat.dennis;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.stage.Stage;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+public class GameController {
+
+    private Player player1;
+    private Player player2;
+
+    private Player currentPlayer;
+
+    private int gameFieldSize;
+
+    private Player[][] playedFields;
+
+    private ObjectProperty<Player> playerWonProperty = new SimpleObjectProperty<>();
+
+    public void registerPlayer1(Player player) {
+        this.player1 = player;
+    }
+
+    public void registerPlayer2(Player player) {
+        this.player2 = player;
+    }
+
+    public Player getNextPlayer() {
+        if (currentPlayer == null) {
+            currentPlayer = getRandomPlayer();
+        } else if (currentPlayer == player1) {
+            currentPlayer = player2;
+        } else {
+            currentPlayer = player1;
+        }
+
+        return currentPlayer;
+    }
+
+    public void playerPlayed(Player player, int x, int y) {
+        playedFields[y][x] = player;
+
+        playerWonProperty.set(getPlayerHasWonHorizontal());
+        playerWonProperty.set(getPlayerHasWonVertical());
+        playerWonProperty.set(getPlayerHasWonDiagonalLeft());
+        playerWonProperty.set(getPlayerHasWonDiagonalRight());
+    }
+
+    public void setGameFieldSize(int gameFieldSize) {
+        this.gameFieldSize = gameFieldSize;
+
+        playedFields = new Player[gameFieldSize][gameFieldSize];
+    }
+
+    public ObjectProperty<Player> playerWon() {
+        return playerWonProperty;
+    }
+
+    private Player getRandomPlayer() {
+        return new Random().nextInt(2) == 0 ? player1 : player2;
+    }
+
+    private Player getPlayerHasWonHorizontal() {
+        for (int y = 0; y < gameFieldSize; y++) {
+            Set<Player> playerOnLength = new HashSet<>();
+            for (int x = 0; x < gameFieldSize; x++) {
+                Player player = playedFields[y][x];
+                playerOnLength.add(player);
+
+            }
+            if (playerOnLength.size() == 1) {
+                return playerOnLength.iterator().next();
+            } else {
+                playerOnLength.clear();
+            }
+        }
+
+        return null;
+    }
+
+    private Player getPlayerHasWonVertical() {
+        for (int x = 0; x < gameFieldSize; x++) {
+            Set<Player> playerOnLength = new HashSet<>();
+            for (int y = 0; y < gameFieldSize; y++) {
+                Player player = playedFields[y][x];
+                playerOnLength.add(player);
+            }
+            if (playerOnLength.size() == 1) {
+                return playerOnLength.iterator().next();
+            } else {
+                playerOnLength.clear();
+            }
+        }
+        return null;
+    }
+
+    private Player getPlayerHasWonDiagonalLeft() {
+        Set<Player> playerOnLength = new HashSet<>();
+        for (int x = 0; x < gameFieldSize; x++) {
+                Player player = playedFields[gameFieldSize -x -1][x];
+                playerOnLength.add(player);
+            }
+
+
+        if (playerOnLength.size() == 1) {
+            return playerOnLength.iterator().next();
+        }
+        return null;
+    }
+
+    private Player getPlayerHasWonDiagonalRight()
+        {
+        Set<Player> playerOnLength = new HashSet<>();
+        for (int i = 0; i < gameFieldSize; i++) {
+            Player player = playedFields[i][i];
+            playerOnLength.add(player);
+
+        }
+        if (playerOnLength.size() == 1)
+        {
+            return playerOnLength.iterator().next();
+        }
+        return null;
+    }
+
+}
+
+
+---------------
+
+
+
+package tikTat.dennis;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+@FunctionalInterface
+public interface GameIconFactory {
+
+    public GameIcon buildGameIcon();
+}
+
+
+-----------------------
+
+package tikTat.dennis;
+
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+public class PlayableField extends StackPane {
+
+    private static final String CSS_CLASS = "playable-field";
+
+    private int x;
+    private int y;
+
+    private GameController gameController;
+
+    public PlayableField(GameController gameController, int x, int y) {
+        this.gameController = gameController;
+        this.x = x;
+        this.y = y;
+
+        initPane();
+        initMouseClickEventHandler();
+    }
+
+    private void initPane(){
+        this.setMinSize(50, 50);
+        this.getStyleClass().add(CSS_CLASS);
+    }
+
+    private void initMouseClickEventHandler(){
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleMouseClickedAction);
+    }
+
+    private void handleMouseClickedAction(MouseEvent mouseEvent){
+        Player player = gameController.getNextPlayer();
+        GameIcon gameIcon = player.getGameIconFactory().buildGameIcon();
+        gameController.playerPlayed(player, x, y);
+        this.getChildren().add(gameIcon);
+    }
+}
+
+
+------------------
+
+package tikTat.dennis;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+public class Player {
+
+    private StringProperty nameProperty = new SimpleStringProperty();
+
+    private GameIconFactory gameIconFactory;
+
+    public Player(String name, GameIconFactory gameIconFactory) {
+        this.nameProperty.set(name);
+        this.gameIconFactory = gameIconFactory;
+    }
+
+    public StringProperty nameProperty() {
+        return nameProperty;
+    }
+
+    public GameIconFactory getGameIconFactory() {
+        return gameIconFactory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+
+        Player player = (Player) o;
+
+        return nameProperty.get().equals(player.nameProperty.get());
+    }
+
+    @Override
+    public int hashCode() {
+        return nameProperty.get().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return nameProperty.get();
+    }
+}
+
+---------------------
+
+package tikTat.dennis;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+
+
+
+public class TicTacToeApplication extends Application {
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+
+        GameController gameController = new GameController();
+        gameController.playerWon().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println("player " + newValue.toString() + " has won");
+            }
+        });
+
+        gameController.registerPlayer1(new Player("Player 1", () -> new GameIcon("X")));
+        gameController.registerPlayer2(new Player("Player 2", () -> new GameIcon("O")));
+        GameField gameField = new GameField(5, gameController);
+
+
+        primaryStage.setScene(new Scene(gameField));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("design.css").toExternalForm());
+
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
+}
+
+
+----------------
+
+
+
+package tikTat.dennis;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+/**
+ * javaDoc
+ *
+ * @author Dennis Nolte
+ */
+public class GameField extends GridPane {
+
+
+
+    private GameController gameController;
+    private int gameFieldSize;
+
+
+    public GameField(int gameFieldSize, GameController gameController) {
+        this.gameFieldSize = gameFieldSize;
+        this.gameController = gameController;
+        this.gameController.setGameFieldSize(gameFieldSize);
+
+        initPane();
+    }
+
+    public void startGame(Stage primaryStage) {
+        Player nextPlayer = gameController.getNextPlayer();
+    }
+
+    private void initPane() {
+        for (int x = 0; x < gameFieldSize; x++) {
+            for (int y = 0; y < gameFieldSize; y++) {
+                this.add(buildPlayableField(x, y), x, y);
+
+            }
+        }
+    }
+
+    private PlayableField buildPlayableField(int x, int y) {
+        PlayableField playableField = new PlayableField(gameController, x, y);
+
+        return playableField;
+    }
+}
+
+
+-----------------
+
+
+

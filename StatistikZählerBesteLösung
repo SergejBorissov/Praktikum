@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+
+/**
+ * @author: sborissov
+ * @version: 0.3
+ * @date: 18.09.2020
+ */
+public class StatistikZaehler {
+
+
+
+
+
+
+    public static int ReadDurationYear(){
+
+        return 365/60;
+    }
+
+    public static int PagesPerMonth(){
+        return  60 / 30 * 20;
+    }
+
+    public static float BooksPerMonth(){
+
+        return PagesPerMonth() / 300f;
+    }
+
+    public static float WritePagesPerHour(){
+        return 60 * 2;
+    }
+
+
+    public static float WritePagesPerMonth(){
+        return 30 / 60 * 2;
+    }
+
+    public String bla(){
+
+        return "bla";
+    }
+
+
+
+
+    public static void main(String[] args) {
+
+        int daysPerMonth = 30;
+        int minutesPerHour = 60;
+        int monthsPerYear = 12;
+
+
+        int inputMinutes;
+        Scanner dataInput = new Scanner(System.in);
+
+        System.out.println("Gebe die tägliche Dauer(min) ein:   ");
+        inputMinutes = dataInput.nextInt();
+
+
+        System.out.println("Hier Lesestunden in einem Monat:  " + inputMinutes  * minutesPerHour / daysPerMonth );
+
+        System.out.println("Die Lesestunden in einem Jahr: " + ReadDurationYear() * inputMinutes);
+
+
+
+
+        System.out.println("So viel Seiten pro Monat:  " + inputMinutes * PagesPerMonth());
+
+
+
+        System.out.println("Das sind  " + inputMinutes * BooksPerMonth() +
+                " Bücher pro Monat (ein Buch mit 300 Seiten)");
+
+
+
+        System.out.println("So viel Bücher in 10 Jahren:  " +
+                inputMinutes * BooksPerMonth() * monthsPerYear * 10);
+
+
+       // System.out.println("So viel Seiten in einer Stunde:  " + inputMinutes / WritePagesPerHour());
+
+        StatistikZaehler t = new StatistikZaehler();
+
+        t.bla();
+
+        System.out.println(inputMinutes * WritePagesPerMonth());
+
+
+
+
+
+    }
+
+}
+
+
+

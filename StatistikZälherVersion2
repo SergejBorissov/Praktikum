@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+
+/**@author: sborissov
+ * @version: 0.2
+ * @date: 18.09.2020
+ *
+ *
+ */
+public class StatistikZaehler {
+
+
+    public static int getLeseDauer() {
+        return LeseDauer;
+    }
+
+    static int LeseDauer;
+
+
+    public static void main(String[] args) {
+
+
+
+        int minuten;
+
+        Scanner dateneingabe = new Scanner(System.in);
+
+
+        System.out.println("Gebe die tägliche Dauer(min) ein:   ");
+        minuten = dateneingabe.nextInt();
+        LeseDauer = minuten*30/60;
+
+        System.out.println("Die monatliche Dauer beträgt:  " + LeseDauer + " Stunden");
+
+
+
+
+        System.out.println("Die jährliche Dauer beträgt:  " + minuten*365/60 + " Stunden");
+
+
+        System.out.println("Monatsdauer Grafik: ");
+        for (int i = 0; i< minuten*30/60; i++){
+            System.out.print("I");
+
+        }
+
+        System.out.println("");
+
+
+        System.out.println("JahresDauer Grafik: ");
+
+        for (int i = 0; i < minuten*365/60; i++){
+            System.out.print("#");
+        }
+
+        System.out.println("");
+
+        System.out.println("Seiten Grafik: ");
+
+        System.out.println("Das sind  " + minuten*30/60*20  + " Seiten pro Monat");
+
+        for(int i = 0;  i < minuten*30/60*20; i++){
+            System.out.print("I");
+        }
+
+
+        System.out.println("");
+
+        System.out.println("Das sind  " + minuten*30/60*20/300f  + " Bücher pro Monat (ein Buch mit 300 Seiten)");
+
+
+
+    }
+
+
+}
+

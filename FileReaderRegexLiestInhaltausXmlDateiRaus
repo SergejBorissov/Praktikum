@@ -1,0 +1,89 @@
+package data;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static javafx.collections.FXCollections.concat;
+
+public class FileReaderRegex {
+
+    public static void main(String[] args) throws Exception{
+
+        FileReader fileReader = new FileReader("/home/sborissov/Schreibtisch/persondata.xml");
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        String zeileVersion = bufferedReader.readLine();
+        System.out.println(zeileVersion);
+        String zeileWurzelement = bufferedReader.readLine();
+        System.out.println(zeileWurzelement);
+        String zeileNummer = bufferedReader.readLine();
+        System.out.println(zeileNummer);
+        String zeileName = bufferedReader.readLine();
+        System.out.println(zeileName);
+
+        System.out.println(zeileName.startsWith(">"));
+
+        /*String s = "Faulheit ist der Hang zur Ruhe ohne vorhergehende Arbeit";
+        StringTokenizer tokenizer = new StringTokenizer( s );
+        while ( tokenizer.hasMoreTokens() )
+            System.out.println( tokenizer.nextToken("n") );
+
+         */
+
+        //Das ist die Lösung
+
+        String name = "<Name>SriAurobindo</Name>";
+        int indexStart = name.indexOf( '>' );
+        System.out.println("start: " + indexStart);
+        int indexEnd = name.indexOf( '/' ); // char < berücksichtigen
+        System.out.println("Ende: " + indexEnd);
+        System.out.println(name.charAt(indexStart+1));
+
+
+        for (int i = indexStart+1; i < name.length()-indexStart-2; i++) {
+            char c = name.charAt(i);
+            System.out.print(c);
+        }
+
+
+
+
+
+
+        // System.out.println("HIER       :" + name.codePointCount(indexStart, indexEnd));
+        //=  name.codePointCount(indexStart,indexEnd);
+
+
+
+
+        /*
+        if(zeile1.contains("<")){
+            System.out.println("Das ist eine XML datei...");
+        }
+
+        if(zeile2.endsWith(">")){
+            System.out.println("Inhalt zwischen...");
+        }
+        if(zeile3.charAt(zeile3.length()-1)=='>'){
+            System.out.println("Inhalt nach >   : ");
+        }
+
+       /* for(int i = 0; i < zeile1.length(); i++){
+            System.out.println(zeile1.startsWith("<"));
+        }*/
+       // System.out.println(zeile2.matches(".*^<,$>"));
+
+
+
+
+
+        bufferedReader.close();
+
+    }
+
+}
+

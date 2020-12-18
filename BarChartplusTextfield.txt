@@ -1,0 +1,129 @@
+package info.borissov;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.InputStream;
+import java.util.Scanner;
+
+import static javafx.geometry.Pos.BOTTOM_LEFT;
+
+
+public class BarChartExperiments extends Application {
+
+
+    public static int getLeseDauerMonat() {
+        return LeseDauerMonat;
+    }
+
+    public static int getLeseDauerJahr() {
+        return LeseDauerJahr;
+    }
+
+    static int LeseDauerMonat;
+    static int LeseDauerJahr;
+
+
+
+
+
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+
+
+
+        primaryStage.setTitle("Metrik des Leseverhaltens");
+
+        CategoryAxis xAxis    = new CategoryAxis();
+        xAxis.setLabel("Kategorien");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Quantität/Menge");
+
+        BarChart     barChart = new BarChart(xAxis, yAxis);
+
+        XYChart.Series dataSeries1 = new XYChart.Series();
+        dataSeries1.setName("Statistik-Deuter");
+
+        XYChart.Data data1 = new XYChart.Data("Lese-Dauer-Monat-Durschnitt", 12);
+        XYChart.Data data2 = new XYChart.Data("Durschnittliche Lesedauer(Monatlich"  , 322);
+        XYChart.Data data3 = new XYChart.Data("Durchscnitt Anzahl Bücher pro Jahr"  , 35);
+        XYChart.Data data4 = new XYChart.Data("Neu",22);
+        dataSeries1.getData().add(data1);
+        dataSeries1.getData().add(data2);
+        dataSeries1.getData().add(data3);
+        dataSeries1.getData().add(data4);
+
+        barChart.getData().add(dataSeries1);
+
+
+
+        VBox vbox = new VBox(barChart);
+        //Scene scene = new Scene(vbox, 700, 100);
+        //primaryStage.setScene(scene);
+
+
+       TextField textField = new TextField("Bitte die Dauer eingeben:  ");
+        textField.setMinWidth(220);
+
+        FlowPane root = new FlowPane();
+        root.setAlignment(Pos.BOTTOM_CENTER);
+
+        root.getChildren().add(textField);
+        HBox hBox = new HBox(vbox, root);
+        Scene scenetext = new Scene(hBox, 200,200);
+
+        primaryStage.setScene(scenetext);
+        primaryStage.setHeight(700);
+        primaryStage.setWidth(1200);
+        primaryStage.show();
+
+
+
+
+
+    }
+
+
+
+
+    public static void main(String[] args) {
+
+        int minuten;
+
+        Scanner dateneingabe = new Scanner(System.in);
+
+
+        System.out.println("Gebe die tägliche Dauer(min) ein:   ");
+
+        System.out.println("TEST<<<<<<<<<<<<<<<<<<<<<<<<");
+
+        Application.launch(args);
+        minuten = dateneingabe.nextInt();
+
+
+
+    }
+
+
+}
+

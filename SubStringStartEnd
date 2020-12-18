@@ -1,0 +1,60 @@
+package data;
+
+public class SubStringStartEnd {
+
+    public static void main(String[] args) {
+
+        StringBuilder tagsname = new StringBuilder("<Nummer>1331</Nummer>" +
+                "<Name>Anselm</Name>" +
+                "<Nachname>Kiefer</Nachname>" +
+                "<Funktion>Maler</Funktion>" +
+                "<Anfang>01.Januar</Anfang>" +
+                "<Geburtstag>12.Dezember</Geburtstag>");
+
+        //<Funktion>Maler</Funktion><Anfang>Januar</Anfang><Ende>23.Dezember</Ende>
+
+        int indexStartOne = tagsname.indexOf(">"); // 7
+        int indexEndOne = tagsname.indexOf("</"); //13
+        int indexStartTwo = tagsname.indexOf("<",indexEndOne + 1); //20
+        int indexEndTwo = tagsname.indexOf(">", indexStartTwo + 1); //26
+        int indexStartThree = tagsname.indexOf("</",indexStartTwo); //34
+        int indexMarkierer = tagsname.indexOf("><",indexStartThree); //markierer
+        int indexStartName = tagsname.indexOf(">",indexMarkierer + 1);
+        int indexEndName = tagsname.indexOf("</",indexStartName);
+        int indexMarkierer2 = tagsname.indexOf("><",indexEndName);
+        int indexStartFunktion = tagsname.indexOf(">",indexMarkierer2 + 1);
+        int indexEndFunktion = tagsname.indexOf("</",indexStartFunktion);
+        int indexMarkierer3 = tagsname.indexOf("><",indexEndFunktion);
+        int indexDauerStart = tagsname.indexOf(">",indexMarkierer3 + 1);
+        int indexDauerEnd = tagsname.indexOf("</",indexDauerStart);
+        int indexMarkierer4 = tagsname.indexOf("><",indexDauerEnd);
+        int indexGeburtstagStart = tagsname.indexOf(">",indexMarkierer4 +1);
+        int indexGeburtstagEnde = tagsname.indexOf("</", indexGeburtstagStart);
+
+        System.out.println("indexStartOne:  " + indexStartOne);
+        System.out.println("indexEndOne:  " + indexEndOne);
+        System.out.println("indexStartTwo:  " + indexStartTwo);
+        System.out.println("indexEndTwo:  " + indexEndTwo);
+        System.out.println("indexStartThree:   " + indexStartThree);
+        System.out.println("Markierer:  " + indexMarkierer);
+        System.out.println("indexStartName:  " + indexStartName);
+        System.out.println("indexEndName:  " + indexEndName);
+
+
+        System.out.println("-------------ausgabe formatiert:   ");
+
+        System.out.println("Erste Zeile:   " + tagsname.substring(indexStartOne + 1, indexEndOne));
+        System.out.println(" Zweite Zeile:   " +  tagsname.substring(indexEndTwo + 1, indexStartThree));
+        System.out.println("Dritte Zeile:  " + tagsname.substring(indexStartName +1, indexEndName));
+        System.out.println("Vierte Zeile:  " + tagsname.substring(indexStartFunktion + 1,indexEndFunktion));
+        System.out.println("Fünfte Zeile: " + tagsname.substring(indexDauerStart + 1, indexDauerEnd));
+        System.out.println("Sechte Zeile: " + tagsname.substring(indexGeburtstagStart + 1, indexGeburtstagEnde));
+
+
+        }
+    }
+
+
+
+
+

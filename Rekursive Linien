@@ -1,0 +1,70 @@
+package grafikMetriken;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root,900,900);
+
+            Line line1 = new Line(10,50,900,50);
+
+
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(55*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(25*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(30*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(35*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(40*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 999; i++){
+                Line line3 = new Line(500,i * 10,i * 5,65 * i);
+                line3.setStroke(Color.YELLOWGREEN);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 999; i++){
+                Line line3 = new Line(355,i * 8,i * 9,35 * i);
+                line3.setStroke(Color.YELLOWGREEN);
+                root.getChildren().add(line3);
+            }
+
+            root.getChildren().add(line1);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

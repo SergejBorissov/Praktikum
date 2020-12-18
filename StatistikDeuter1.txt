@@ -1,0 +1,95 @@
+package sample;
+
+import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import javax.swing.text.Position;
+import java.util.Stack;
+
+
+public class Main extends Application implements EventHandler {
+
+    Button button;
+    Button button2;
+    int i = 0;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        try {
+        primaryStage.setTitle("Statistik Deutungen");
+
+        StackPane root = new StackPane();
+
+        Scene scene = new Scene(root, 400,400);
+
+
+
+
+
+
+
+
+
+        button = new Button();
+            StackPane.setAlignment(button, Pos.TOP_LEFT);
+        button.setMinWidth(220);
+        button.setMaxWidth(22);
+        button.setPrefHeight(22);
+
+            button.setMinHeight(220);
+            button.setMaxHeight(22);
+            button.setPrefHeight(22);
+
+
+            button.setAlignment(Pos.CENTER_LEFT); // nur Text wird verrändert
+           /* button.setMinSize();
+            button.setMaxSize(22);
+            button.setPrefSize(22);*/
+
+
+        button.setText("Daten Auswerten");
+        button.setOnAction(this);
+
+        root.getChildren().add(button);
+
+
+       /* button2 = new Button();
+        button2.setText("KlickAnzahl");
+        button2.setOnAction(this);
+        root.getChildren().add(button2);
+
+        */
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void handle(Event event) {
+
+        if(event.getSource() == button){
+            i++;
+            System.out.println(i + " mal geklickt");
+        }
+
+    }
+}

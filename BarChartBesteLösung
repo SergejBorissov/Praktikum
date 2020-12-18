@@ -1,0 +1,165 @@
+package info.borissov;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
+
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+
+public class BarChartExperiments extends Application {
+
+
+
+
+
+    final int daysPerMonth = 30;
+    final int minute = 60;
+    final int daysPerYear = 365;
+    final int pagePerHour = 20;
+    final float averagePagesPerBook = 300f;
+    final int monthsPerYear = 12;
+
+
+    public static int calculateDurationYear(){
+        return 365/60;
+    }
+
+    public static int calculatePagePerMonth(){
+        return  60 / 30 * 20;
+    }
+
+    public static float calculateBooksPerMonth(){
+        return calculatePagePerMonth() / 300f;
+    }
+
+
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+
+        /*
+        IntegerProperty daysOfMont = new SimpleIntegerProperty(30);
+        IntegerProperty minutesOfHour = new SimpleIntegerProperty(60);
+         */
+
+        primaryStage.setTitle("Metrik des Leseverhaltens");
+
+
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Kategorien");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Quantität/Menge");
+
+        BarChart barChart = new BarChart(xAxis, yAxis);
+
+        XYChart.Series dataSeries1 = new XYChart.Series();
+        dataSeries1.setName("Lese - Statistik");
+        barChart.setStyle("-fx-border-color: blue");
+
+
+
+        XYChart.Data MonthsData = new XYChart.Data("Lese-Zeit-Monatlich (h)", 0);
+        XYChart.Data YearData = new XYChart.Data("Lese-Zeit-Jahr (h)", 0);
+        XYChart.Data PageData = new XYChart.Data("Seiten pro Monat", 0);
+        XYChart.Data BookData = new XYChart.Data("(n)-Bücher in 10 Jahren", 0);
+        dataSeries1.getData().add(MonthsData);
+        dataSeries1.getData().add(YearData);
+        dataSeries1.getData().add(PageData);
+        dataSeries1.getData().add(BookData);
+
+
+        // Monatsdata.YValueProperty().bind(daysOfMont.divide(minutesOfHour));
+
+        barChart.getData().add(dataSeries1);
+
+
+        VBox vbox = new VBox(barChart);
+        vbox.setAlignment(Pos.CENTER);
+
+        //Scene scene = new Scene(vbox, 400, 900);
+        //primaryStage.setScene(scene)
+
+
+        TextField textField = new TextField("Tägliche Lese-Dauer in Minuten:  ");
+        textField.setMinWidth(230);
+
+        textField.setStyle("-fx-text-fill: green");
+
+        //  Bindings.anschauen()
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+
+            if (newValue != null) {
+                try {
+
+
+                    MonthsData.setYValue(Integer.parseInt(newValue) * minute / daysPerMonth);
+                    YearData.setYValue(Integer.parseInt(newValue) * calculateDurationYear());
+                    PageData.setYValue(Integer.parseInt(newValue) * calculatePagePerMonth());
+                    BookData.setYValue(Integer.parseInt(newValue) * calculateBooksPerMonth());
+
+
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
+        /*
+        data1.YValueProperty().bind(Bindings.createIntegerBinding(() -> {
+            try {
+                return Integer.parseInt(textField.getText());
+
+
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+                return 0;
+            }
+        }, textField.textProperty()));
+
+
+         */
+
+
+        FlowPane root = new FlowPane();
+        root.getChildren().add(textField);
+        HBox hBox = new HBox(vbox, root);
+        //root.setAlignment(Pos.TOP_LEFT);
+        Scene scenetext = new Scene(hBox, 700, 800);
+
+        primaryStage.setScene(scenetext);
+        primaryStage.setHeight(700);
+        primaryStage.setWidth(1200);
+        primaryStage.show();
+
+
+    }
+
+
+
+    public static void main(String[] args) {
+
+
+        Application.launch(args);
+
+
+    }
+
+
+}
+

@@ -1,0 +1,53 @@
+package de.borissov;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        String csvFilePath = "/home/sborissov/Schreibtisch/Student.csv";
+        try {
+            BufferedReader lineRead = new BufferedReader(new FileReader(csvFilePath));
+            CSVParser records = CSVParser.parse(lineRead, CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+            Map<Integer, Student> studentMap = new HashMap<Integer, Student>();
+            for(CSVRecord record : records){
+                Student student = new Student();
+                student.setStudentId(Integer.parseInt(record.get(0)));
+                student.setStudentName(record.get(1));
+
+                //Speicherung der Daten in der Map
+                studentMap.put(Integer.parseInt(record.get(0)), student);
+            }
+
+            System.out.println(studentMap);
+
+            Collection collection = studentMap.values();
+            Iterator iterator = collection.iterator();
+            while(iterator.hasNext() != false){
+                Student student = (Student)iterator.next();
+                System.out.println(student.getStudentId() + "  "+ student.getStudentName());
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}
+

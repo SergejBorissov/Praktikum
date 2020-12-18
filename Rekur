@@ -1,0 +1,67 @@
+package grafikMetriken;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root,900,900);
+
+
+
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(55*i,i * 34,i * 10,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            } for(int i = 0; i < 300; i++){
+                Line line3 = new Line(5*i,i * 124,i * 100,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+                Line line3 = new Line(33*i,i * 24,i * 107,500);
+                line3.setStroke(Color.LIGHTBLUE);
+                root.getChildren().add(line3);
+            }
+
+
+            for(int i = 0; i < 300; i++){
+
+                Line line3 = new Line(22*i,i * 42,i * 10,500);
+                line3.setStroke(Color.GREEN);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+
+                Line line3 = new Line(44*i,i * 15,i * 10,500);
+                line3.setStroke(Color.GREEN);
+                root.getChildren().add(line3);
+            }
+            for(int i = 0; i < 300; i++){
+
+                Line line3 = new Line(67*i,i * 52,i * 10,500);
+                line3.setStroke(Color.GREEN);
+                root.getChildren().add(line3);
+            }
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

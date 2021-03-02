@@ -1,0 +1,27 @@
+package entwurfOne;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class Main {
+    public static void main(String[] args) {
+
+        PrintWriter printWriter = null;
+
+        try{
+            printWriter = new PrintWriter(new BufferedWriter(new BufferedWriter(new FileWriter("hierSprichtJava.txt"))));
+            printWriter.println("Priwet");
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        } finally {
+            if(printWriter != null){
+                printWriter.flush();
+                printWriter.close();
+            }
+        }
+
+
+    }
+}

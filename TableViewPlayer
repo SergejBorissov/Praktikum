@@ -1,0 +1,97 @@
+package com.ablex;
+
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+
+public class Main extends Application {
+    @SuppressWarnings("unchecked")
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        TableView tableView = new TableView();
+        TableColumn firstName = new TableColumn("Vorname");
+        TableColumn lastName = new TableColumn("Nachname");
+        TableColumn goals = new TableColumn("Tore");
+        tableView.getColumns().addAll(firstName, lastName, goals);
+
+
+        ObservableList<Player> players = FXCollections.observableArrayList(
+                new Player("Manuel", "Neuer", 0),
+                new Player("Phillip", "Lahm", 0),
+                new Player("Mats", "Hummels", 2),
+                new Player("Jerome", "Boateng", 0),
+                new Player("Benedikt", "Höwedes",0)
+        );
+
+        firstName.setCellValueFactory(
+                new PropertyValueFactory<Player, String>("firstName")
+        );
+
+        lastName.setCellValueFactory(
+                new PropertyValueFactory<Player, String>("lastName")
+        );
+        goals.setCellValueFactory(
+                new PropertyValueFactory<Player, Integer>("goals")
+        );
+
+        tableView.setItems(players);
+        StackPane root = new StackPane(tableView);
+        Scene scene = new Scene(root, 300,250);
+
+        primaryStage.setTitle("Versuch Nr.1: TableView mit CSV Parser");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+
+
+------------------------------------------------
+
+
+
+package com.ablex;
+
+public class Player {
+    String lastName;
+    String firstName;
+    int goals;
+
+    public Player(String firstName, String lastName, int goals){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.goals = goals;
+    }
+
+    public String getLastName(){
+        return lastName;
+    }
+
+    public String getFirstName(){
+        return firstName;
+    }
+
+    public int getGoals(){
+        return goals;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+}

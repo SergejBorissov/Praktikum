@@ -1,0 +1,28 @@
+public class BigData {
+
+    private double datenTiefe;
+    private double datenBreite;
+    private double datenDynamik;
+    private double datenRhytmus;
+
+
+    private String datenQuelle;
+    private String datenZiel;
+
+
+    static void datenErfassung(){}
+    static void datenVereinfachung(){}
+    static void datenBuendelung(){}
+
+
+    public BigData(String datenZiel, String datenQuelle, double datenTiefe
+    ,double datenBreite, double datenDynamik, double datenRhytmus ) {
+        this.datenZiel = datenZiel;
+        this.datenQuelle = datenQuelle;
+        this.datenTiefe = datenTiefe;
+        this.datenBreite = datenBreite;
+        this.datenDynamik = datenDynamik;
+        this.datenRhytmus = datenRhytmus;
+    }
+
+}

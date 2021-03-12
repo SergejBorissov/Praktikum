@@ -1,0 +1,144 @@
+
+
+public class FactoryPattern {
+    public static void main(String[] args) {
+        Factory factory = new Factory();
+
+        Vehicle erzeugtesAuto = factory.createVehicle(Factory.CAR);
+        Vehicle erzeugtesMotorad = factory.createVehicle(Factory.MOTORCYCLE);
+        Vehicle erzeugeLKW = factory.createVehicle(Factory.LKW);
+
+        System.out.println(
+                erzeugtesAuto.getName() + ": " +
+                        erzeugtesAuto.getCountofTires() +
+                        " Tires (Reifen) " + " Color: " +
+                        erzeugtesAuto.getColor() + "Kofferraum: "
+        );
+
+        System.out.println(
+                erzeugtesMotorad.getName() +
+                        " : " + erzeugtesMotorad.getCountofTires()
+                 + " tires" + " Color: " +
+                        erzeugtesMotorad.getColor()
+        );
+
+        System.out.println(
+                erzeugeLKW.getName() +
+                        " : " + erzeugeLKW.getCountofTires()
+                        + " tires" + " Color: " +
+                        erzeugeLKW.getColor()
+        );
+    }
+}
+
+
+
+-----------------------
+
+
+public class Factory  {
+
+    public static final int CAR = 0;
+    public static final int MOTORCYCLE = 1;
+    public static final int LKW = 3;
+
+
+    public Vehicle createVehicle(int i){
+        switch(i){
+            case CAR:
+                return new Car();
+            case MOTORCYCLE:
+                return new Motorcycle();
+            case LKW:
+                return new LKW();
+            default:
+                throw new IllegalArgumentException("Wrong Vehicle Number");
+        }
+    }
+}
+
+
+
+----------------------------
+
+public class LKW implements Vehicle{
+    @Override
+    public int getCountofTires() {
+        return 8;
+    }
+
+    @Override
+    public String getName() {
+        return "LKW";
+    }
+    @Override
+    public String getColor(){
+        return "Blue";
+    }
+}
+
+
+
+------------------------------
+public class Motorcycle implements Vehicle{
+    @Override
+    public int getCountofTires() {
+        return 2;
+    }
+
+    @Override
+    public String getName() {
+        return "Motorcyle";
+    }
+
+    @Override
+    public String getColor(){
+        return "White";
+    }
+}
+
+
+
+
+---------------------------
+public class Car implements Vehicle{
+    @Override
+    public int getCountofTires() {
+        return 4;
+    }
+
+    @Override
+    public String getName() {
+        return "Car";
+    }
+
+    @Override
+    public String getColor(){
+        return "Blue";
+    }
+
+    public boolean getKofferraum(){
+        return true;
+    }
+}
+
+
+
+--------------------------
+
+public interface Vehicle {
+
+    public int getCountofTires();
+    public String getName();
+    public String getColor();
+}
+
+
+
+
+
+
+
+
+
+

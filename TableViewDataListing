@@ -1,0 +1,363 @@
+package info.borissov;
+
+
+import java.io.*;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+    private TableViewPane tableViewPane = new TableViewPane();
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        SettingsPane settingsPane = new SettingsPane();
+        settingsPane.setButtonReadCSVActionHandler(event -> executeRead(DataType.CSV));
+        settingsPane.setButtonReadJSONActionHandler(event -> executeRead(DataType.JSON));
+
+        //Hier eine Verknüpfung mit dem JDOMReader bauen,
+        //davor sollte jedoch eine Zuordnung stattfinden...ColumnThema zu ColumnInhalt
+        settingsPane.setButtonReadXMLActionHandler(event -> executeRead(DataType.XML));
+
+        VBox rootPane = new VBox(tableViewPane, settingsPane);
+        VBox.setVgrow(tableViewPane, Priority.ALWAYS);
+
+
+        primaryStage.setTitle("Data to Table ");
+        primaryStage.setScene(new Scene(rootPane, 900, 700));
+        primaryStage.show();
+    }
+
+    private void executeRead(DataType dataType) {
+
+        new Thread(() -> {
+            executeRead(dataType);
+        System.out.println(Thread.currentThread());
+            DataController dataController = null;
+
+            switch (dataType){
+                case CSV:
+                    dataController = new CSVDataController();
+                    break;
+                case JSON:
+                    dataController = new JSONDataController();
+                    break;
+                case XML:
+                    dataController = new XMLDataController();
+                    break;
+            }
+
+            List<Person> peopleCSV = dataController.readData("/home/sborissov/Schreibtisch/person.csv");
+            Platform.runLater(() -> {
+                System.out.println(Thread.currentThread());
+                tableViewPane.getItems().addAll(peopleCSV);
+            });
+
+        }).start();
+        System.out.println("blabla");
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+}
+
+
+------------------------------
+
+
+package info.borissov;
+
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+
+
+public class TableViewPane extends StackPane {
+
+    private final TableView<Person> tableView = new TableView<>();
+
+    public TableViewPane() {
+        initTableColumns();
+        initPane();
+    }
+
+    public ObservableList<Person> getItems() {
+        return tableView.getItems();
+    }
+
+    private void initTableColumns() {
+        TableColumn columnNummer = new TableColumn("Nummer");
+        columnNummer.setCellValueFactory(
+                new PropertyValueFactory<>("Nummer"));
+
+        TableColumn columnName = new TableColumn("Name");
+        columnName.setCellValueFactory(
+                new PropertyValueFactory<>("Name"));
+
+        TableColumn columnNachname = new TableColumn("Nachname");
+        columnNachname.setCellValueFactory(
+                new PropertyValueFactory<>("Nachname"));
+
+        TableColumn columFunktion = new TableColumn("Funktion");
+        columFunktion.setCellValueFactory(
+                new PropertyValueFactory<>("Funktion"));
+
+        TableColumn columnAnfang = new TableColumn("Anfang");
+        columnAnfang.setCellValueFactory(
+                new PropertyValueFactory<>("Anfang"));
+
+        TableColumn columnEnde = new TableColumn("Ende");
+        columnEnde.setCellValueFactory(
+                new PropertyValueFactory<>("Ende"));
+
+        tableView.getColumns().addAll(
+                columnNummer, columnName, columnNachname, columFunktion, columnAnfang, columnEnde);
+    }
+
+    private void initPane() {
+        this.getChildren().add(tableView);
+    }
+}
+
+
+------------------------------------
+package info.borissov;
+
+import java.util.Arrays;
+import java.util.List;
+
+
+public class JSONDataController implements DataController{
+
+    @Override
+    public List<Person> readData(String filename) {
+        return Arrays.asList(new Person("1", "1", "1", "1", "1", "1"),
+                new Person("2", "2", "2", "2", "2", "2"),
+                new Person("4", "4", "3", "3", "3", "3"));
+
+    }
+}
+
+---------------------------------
+
+package info.borissov;
+
+import java.util.List;
+
+
+public interface DataController {
+
+    public List<Person> readData(String filename);
+}
+
+
+-----------------------------------
+
+package info.borissov;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class CSVDataController implements DataController{
+
+
+    @Override
+    public List<Person> readData(String filename) {
+        List<Person> data = new ArrayList<>();
+
+        String fieldDelimiter = ",";
+
+        BufferedReader br;
+
+        try {
+            br = new BufferedReader(new FileReader(filename));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(fieldDelimiter, -1);
+
+                if (fields.length >= 6) {
+                    Person record = new Person(fields[0], fields[1], fields[2],
+                            fields[3], fields[4], fields[5]);
+                    data.add(record);
+                }
+
+            }
+            Thread.sleep(1000);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Main.class.getName())
+                .log(Level.SEVERE, "sleep", ex);
+        }
+
+        return data;
+    }
+}
+
+
+---------------------------
+
+package info.borissov;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+
+
+public class SettingsPane extends StackPane {
+
+    private Button buttonReadCSV;
+
+    private Button buttonReadJSON;
+
+    private Button buttonReadXML;
+
+    public SettingsPane() {
+        initButtons();
+        initPane();
+    }
+
+    public void setButtonReadCSVActionHandler(EventHandler<ActionEvent> eventEventHandler) {
+        this.buttonReadCSV.setOnAction(eventEventHandler);
+    }
+
+    public void setButtonReadJSONActionHandler(EventHandler<ActionEvent> eventEventHandler) {
+        this.buttonReadJSON.setOnAction(eventEventHandler);
+    }
+
+    public void setButtonReadXMLActionHandler(EventHandler<ActionEvent> eventEventHandler){
+        this.buttonReadXML.setOnAction(eventEventHandler);
+    }
+
+    private void initButtons() {
+        buttonReadCSV = new Button("Read CSV");
+
+        buttonReadJSON = new Button("Read JSON");
+
+        buttonReadXML = new Button("Read XML");
+
+
+    }
+
+    private void initPane() {
+        HBox hBox = new HBox(5, buttonReadCSV, buttonReadJSON, buttonReadXML);
+
+        this.getChildren().add(hBox);
+    }
+
+}
+
+
+
+-------------------------
+
+package info.borissov;
+
+
+public enum DataType {
+    CSV,
+    XML,
+    JSON;
+}
+
+--------------------------
+
+
+
+package info.borissov;
+
+import javafx.beans.property.SimpleStringProperty;
+
+public class Person {
+
+    private SimpleStringProperty nummer, name, nachname, funktion, anfang, ende;
+
+    public Person(String nummer, String name, String nachname, String funktion, String anfang, String ende) {
+        this.nummer = new SimpleStringProperty(nummer);
+        this.name = new SimpleStringProperty(name);
+        this.nachname = new SimpleStringProperty(nachname);
+        this.funktion = new SimpleStringProperty(funktion);
+        this.anfang = new SimpleStringProperty(anfang);
+        this.ende = new SimpleStringProperty(ende);
+    }
+
+    public String getNummer() {
+        return nummer.get();
+    }
+
+    public String getName() {
+        return name.get();
+    }
+
+    public String getNachname() {
+        return nachname.get();
+    }
+
+    public String getFunktion() {
+        return funktion.get();
+    }
+
+    public String getAnfang() {
+        return anfang.get();
+    }
+
+    public String getEnde() {
+        return ende.get();
+    }
+}
+
+
+
+---------------------------------
+
+
+package info.borissov;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class XMLDataController implements DataController {
+    @Override
+    public List<Person> readData(String filename) {
+        return Arrays.asList(new Person("1", "1", "1", "1", "1", "1"),
+                new Person("2", "2", "2", "2", "2", "2"),
+                new Person("4", "4", "3", "3", "3", "3"));
+    }
+}

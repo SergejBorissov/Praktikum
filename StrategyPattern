@@ -1,0 +1,75 @@
+public class Strategy {
+
+    public ClassSelector getInstance(){
+        final boolean isWin = System.getProperty("os.name").startsWith("Windows");
+        final boolean isMac = System.getProperty("os.name").startsWith("Mac");
+        final boolean isLinux = System.getProperty("os.name").startsWith("Lunix");
+
+        if(isWin){
+            return new WinImpl();
+        } else if (isMac) {
+            return new MacImpl();
+        } else if(isLinux){
+            return new LinuxImpl();
+        } else {
+            System.out.println("OS ist nicht feststellbar");
+        }
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+
+        Strategy strategy = new Strategy();
+        ClassSelector inter = strategy.getInstance();
+        inter.printOS();
+
+    }
+}
+
+
+-------------------------
+
+public class LinuxImpl implements ClassSelector{
+    @Override
+    public void printOS() {
+        System.out.println("Linux");
+    }
+}
+
+
+-------------------------
+
+  class MacImpl implements ClassSelector{
+    @Override
+    public void printOS() {
+        System.out.println("Mac OS X");
+    }
+}
+
+
+
+----------------------
+
+
+
+
+public class WinImpl implements ClassSelector{
+    @Override
+    public void printOS() {
+        System.out.println("Windows");
+    }
+}
+
+
+
+-----------------------
+
+public interface ClassSelector {
+
+    public void printOS();
+}
+
+
+
+

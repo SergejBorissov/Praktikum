@@ -1,0 +1,55 @@
+package de.borissov;
+
+import java.sql.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        /**
+         * server ist localhost
+         * 3306 ist der Port
+         * test ist der name der tabelle in phpmyadmin
+         */
+
+        String url = "jdbc:mysql://localhost:3306/test";
+        String user = "root";
+        String password = "";
+
+        try(Connection connection = DriverManager.getConnection(url, user, password)){
+
+            System.out.println("Verbindung mit der Datenbank hat funktioniert");
+
+            //Daten einfügen und Verrändern (Update)
+           // String query = "INSERT INTO bib(id, title, author, year, pages) VALUES(2, 'OOP', 'Borissov', 2022, 569)";
+            String query = "UPDATE bib SET title='JavMedArt' WHERE id = 1";
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+            statement.close();
+
+            //ausgeben von der Daten
+            query = "SELECT * FROM bib ORDER BY id ASC";
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            int columns = resultSet.getMetaData().getColumnCount();
+
+            for(int i = 1; i <= columns; i++)
+                System.out.print(String.format("%-15s", resultSet.getMetaData().getColumnLabel(i)));
+                System.out.println();
+            System.out.println("------------------------------------------------------------------------------------------");
+            while(resultSet.next()){
+                for(int i = 1; i <= columns; i++)
+                    System.out.print(String.format("%-15s", resultSet.getString(i)));
+                System.out.println();
+            }
+
+            resultSet.close();
+            statement.close();
+
+        } catch(SQLException exception){
+            System.err.print(exception.getMessage());
+        }
+
+    }
+}

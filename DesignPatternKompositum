@@ -1,0 +1,95 @@
+package desginPatterns;
+
+public class Kompositum {
+
+    public static void main(String[] args) {
+
+        Schachtel schachtel1 = new Schachtel(), schachtel2 = new Schachtel(),
+                schachtel3 = new Schachtel(), schachtel4 = new Schachtel();
+
+        Dose dose1 = new Dose(), dose2 = new Dose(), dose3 = new Dose();
+
+        Kasten kasten1 = new Kasten(), kasten2 = new Kasten();
+
+        kasten1.legeRein(schachtel1);
+        kasten2.legeRein(schachtel2);
+        kasten2.legeRein(schachtel3);
+        kasten2.legeRein(schachtel4);
+        kasten2.legeRein(dose1);
+        kasten2.legeRein(dose2);
+        kasten2.legeRein(dose3);
+
+        Kasten truhe = new Kasten();
+        truhe.legeRein(kasten1);
+        truhe.legeRein(kasten2);
+
+        truhe.enthalten();
+
+    }
+}
+
+
+-------------------------------
+
+package desginPatterns;
+
+public class Dose implements Verpackung{
+    @Override
+    public void enthalten() {
+        System.out.println("Dose");
+    }
+}
+
+
+-----------------------------
+
+package desginPatterns;
+
+public class Schachtel implements Verpackung{
+    @Override
+    public void enthalten() {
+        System.out.println("Schachtel");
+    }
+}
+
+
+------------------------------
+
+package desginPatterns;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Kasten implements Verpackung{
+
+    private List<Verpackung> verpackungenListe = new ArrayList<Verpackung>();
+
+    @Override
+    public void enthalten() {
+           for (Verpackung verpackung : verpackungenListe){
+               verpackung.enthalten();
+           }
+    }
+
+    public void legeRein(Verpackung verpackung){
+        verpackungenListe.add(verpackung);
+    }
+
+    public void nimmRaus(Verpackung verpackung){
+        verpackungenListe.remove(verpackung);
+    }
+}
+
+
+-----------------------------
+
+package desginPatterns;
+
+interface Verpackung {
+    void enthalten();
+}
+
+
+
+------------------------
+
